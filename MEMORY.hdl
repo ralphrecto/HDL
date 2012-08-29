@@ -1,0 +1,26 @@
+/* Data memory implementation for the Hack computer.
+ * First 4 RAM4Ks (0-16383): Data
+ * Next 2 RAM4Ks (16384-24575): Screen memory map
+ * Next Register (24576): Keyboard memory map
+ */
+
+CHIP MEMORY {
+	IN in[16], address[16], load;
+	OUT out[16];
+	PARTS:
+	DEMUX1BIT8WAY(in=load, sel=address[12..14], a=wram1, b=wram2, c=wram3, d=wram4, e=wram5, f=wram6, g=wram7, h=wram8);
+	//Data
+	RAM4K(in=in, load=wram1, address=address[0..11], out=oram1);
+	RAM4K(in=in, load=wram2, address=address[0..11], out=oram2);
+	RAM4K(in=in, load=wram3, address=address[0..11], out=oram3);
+	RAM4K(in=in, load=wram4, address=address[0..11], out=oram4);
+	
+	//Screen
+	RAM4K(in=in, load=wram5, address=address[0..11], out=oram5);
+	RAM4K(in=in, load=wram6, address=address[0..11], out=oram6);
+	
+	//Keyboard
+	Register(in=in, load=wram7, out=oram7);
+	Register(in=in, load=wram8, out=oram8); //dummy register, will never get used
+	Mux8Way16(a=oram1, b=oram2, c=oram3, d=oram4, e=oram5, f=oram6, g=oram7, h=oram8, sel=address[12..14], out=out);
+}

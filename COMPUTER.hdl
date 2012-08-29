@@ -1,0 +1,13 @@
+/* Top level chip for the Hack computer
+ * Includes instruction memory, data memory, and CPU
+ */
+
+CHIP COMPUTER {
+	IN reset;
+	PARTS:
+	ROM32K(address=PCout, out=instructionOut);
+	CPU(inM=dataOut, instruction=instructionOut, reset=reset, writeM=loadData, outM=data, addressM[0..13]=ramAddr, addressM[0..12]=screenAddr, pc[0..14]=PCout);
+	RAM16K(in=data, address=ramAddr, load=loadData, out=dataOut);
+	Screen(in=data, address=screenAddr, load=loadData, out=screenOut);
+	Keyboard(out=keyOut);
+}

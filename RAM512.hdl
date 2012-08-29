@@ -1,0 +1,24 @@
+/* 512-register RAM made of 8-bit RAM
+ *
+ * 9-bit address:
+ * address[0..2] maps to the RAM64s
+ * address[3..5] maps to the RAM8s
+ * address[6..8] maps to the registers inside the selected RAM8
+ */
+
+CHIP RAM512 {
+	IN in[16], load, address[9];
+	OUT out[16];
+	PARTS:
+	DEMUX8(in=in, sel=address[0..2], a=ram1, b=ram2, c=ram3, d=ram4, e=ram5, f=ram6, g=ram7, h=ram8);
+	DEMUX1BIT8WAY(in=load, sel=address[0..2], a=wram1, b=wram2, c=wram3, d=wram4, e=wram5, f=wram6, g=wram7, h=wram8);
+	RAM64(in=ram1, load=wram1, address=address[3..8], out=oram1);
+	RAM64(in=ram2, load=wram2, address=address[3..8], out=oram2);
+	RAM64(in=ram3, load=wram3, address=address[3..8], out=oram3);
+	RAM64(in=ram4, load=wram4, address=address[3..8], out=oram4);
+	RAM64(in=ram5, load=wram5, address=address[3..8], out=oram5);
+	RAM64(in=ram6, load=wram6, address=address[3..8], out=oram6);
+	RAM64(in=ram7, load=wram7, address=address[3..8], out=oram7);
+	RAM64(in=ram8, load=wram8, address=address[3..8], out=oram8);
+	MUX8WAY(a=oram1, b=oram2, c=oram3, d=oram4, e=oram5, f=oram6, g=oram7, h=oram8, sel=address[0..2], out=out);
+}

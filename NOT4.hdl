@@ -1,0 +1,11 @@
+//4-bit NOT operator
+
+CHIP NOT4 {
+	IN a[4];
+	OUT out[4];
+	PARTS:
+	NOT(a=a[0], out=out[0]);
+	NOT(a=a[1], out=out[1]);
+	NOT(a=a[2], out=out[2]);
+	NOT(a=a[3], out=out[3]);
+}

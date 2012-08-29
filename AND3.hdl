@@ -1,0 +1,11 @@
+//3 bit AND gate
+//ensures that a, b, c = 1
+
+CHIP AND3 {
+	IN a, b, c;
+	OUT out;
+	PARTS:
+	AND(a=a, b=b, out=out1);
+	AND(a=out1, b=c, out=out);
+}
+

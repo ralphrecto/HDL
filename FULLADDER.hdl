@@ -1,0 +1,11 @@
+//Full adder
+//Adds three bits together, outputs sum and carry bit
+
+CHIP FULLADDER {
+	IN a, b, c; //c is for carry
+	OUT sum, carry;
+	PARTS:
+	HALFADDER(a=a, b=b, sum=sum1, carry=car1);
+	HALFADDER(a=sum1, b=c, sum=sum, carry=car2);
+	OR(a=car1, b=car2, out=carry);
+}

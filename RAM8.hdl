@@ -1,0 +1,24 @@
+/* RAM chip with width of 16 bits and size of 8 registers
+ * composed of muxes and demuxes and registers and so forth
+ * 
+ * in[16]: 16-bit input into a register
+ * write: set to 1 to signify writing to an address 
+ * address[3]: 3-bit address to find the register 
+ */
+
+CHIP RAM8 {
+	IN in[16], load, address[3];
+	OUT out[16];
+	PARTS:
+	DEMUX8(in=in, sel=address, a=reg1, b=reg2, c=reg3, d=reg4, e=reg5, f=reg6, g=reg7, h=reg8);
+	DEMUX1BIT8WAY(in=load, sel=address, a=wreg1, b=wreg2, c=wreg3, d=wreg4, e=wreg5, f=wreg6, g=wreg7, h=wreg8);
+	REGISTER(in=reg1, load=wreg1, out=oreg1);
+	REGISTER(in=reg2, load=wreg2, out=oreg2);
+	REGISTER(in=reg3, load=wreg3, out=oreg3);
+	REGISTER(in=reg4, load=wreg4, out=oreg4);
+	REGISTER(in=reg5, load=wreg5, out=oreg5);
+	REGISTER(in=reg6, load=wreg6, out=oreg6);
+	REGISTER(in=reg7, load=wreg7, out=oreg7);
+	REGISTER(in=reg8, load=wreg8, out=oreg8);
+	MUX8WAY(a=oreg1, b=oreg2, c=oreg3, d=oreg4, e=oreg5, f=oreg6, g=oreg7, h=oreg8, sel=address, out=out);
+}

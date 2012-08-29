@@ -1,0 +1,8 @@
+//increments an 8-bit number by 1
+
+CHIP INCREMENTER {
+	IN a[8];
+	OUT out[8];
+	PARTS:
+	ADDER8(a=a, b[0]=true, b[1..7]=false, out=out);
+}

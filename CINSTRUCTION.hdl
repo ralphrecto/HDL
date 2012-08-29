@@ -1,0 +1,13 @@
+CHIP CINSTRUCTION {
+	IN instruction[16], inM[16], reset;
+	OUT outM[16], addressM[16], writeM, pc[16];	
+	PARTS:
+	Mux16(a=instruction, b=ALUout, sel=instruction[15], out=instructionout);
+	ARegister(in=instructionout, load=instruction[5], out=regA, out=addressM);
+	Mux16(a=inM, b=regA, sel=instruction[12], out=ALUin1);
+	DRegister(in=ALUout, load=instruction[4], out=ALUin2);
+	ALU(x=ALUin1, y=ALUin2, zx=instruction[12], nx=instruction[11], zy=instruction[10], ny=instruction[9], f=instruction[8], no=instruction[7], out=ALUout, out=outM);
+	COMPARE(x=ALUout, y[0..15]=false, instruction=instruction[0..2], out=loadpc);
+	PC(in=regA, load=loadpc, inc=true, reset=reset, out=pc);
+	And(a=instruction[3], b=instruction[3], out=writeM);
+}

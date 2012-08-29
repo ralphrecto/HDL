@@ -1,0 +1,12 @@
+//4-bit multiplexor
+//Note: for other bus widths, just change the bus widths! (duh)
+
+CHIP MUX4 {
+	IN a[4], b[4], sel;
+	OUT out[4];
+	PARTS:
+	MUX(a=a[0], b=b[0], sel=sel, out=out[0]);
+	MUX(a=a[1], b=b[1], sel=sel, out=out[1]);
+	MUX(a=a[2], b=b[2], sel=sel, out=out[2]);
+	MUX(a=a[3], b=b[3], sel=sel, out=out[3]);
+}

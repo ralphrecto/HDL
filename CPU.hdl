@@ -1,0 +1,53 @@
+/* A freakin CPU implementation of the Hack platform.
+ * 
+ * Features:
+ * - 16-bit words. 2s complement numerical representation
+ * - Address register: word can be interpreted as either address or data
+ * - Data register: generic 16-bit register 
+ * - M register: represents the contents of Memory[A] (A = address in A register)
+ * - ALU computation (zx, nx, zy, ny, f(1=add, 0=&), no(!out))
+ * - Program counter
+ *  
+ * A-instruction (address)
+ * - 0xxxxxxxxxxxxxxx 
+ * - x's represent a 15-bit memory address [0..14]
+ *
+ * C-instruction (computation)
+ * - 111accccccdddjjj
+ * - a: flag for mux between A and M register (0=A, M=1) [12]
+ * - c: 6-bit instruction for ALU [6..11]
+ * - d: 3-bit destination flag (l-to-r: A, D, M) [3..5]
+ * - j: 3-bit instruction for compare chip (jump direction. l-to-r: <, =, >) [0..2]
+ */
+
+CHIP CPU {
+	IN instruction[16], inM[16], reset;
+	OUT outM[16], addressM[16], writeM, pc[16];	
+	PARTS:
+	//Decoding the instruction
+	//Determine if instruction input represents address or computation
+	And(a=instruction[15], b=instruction[15], out=cInstruction);
+	Not(in=instruction[15], out=aInstruction);
+
+	//Set load bits accordingly
+	Or(a=aInstruction, b=instruction[5], out=loadA);
+	And(a=cInstruction, b=instruction[4], out=loadD);
+	And(a=cInstruction, b=instruction[12], out=selA);
+	
+	//Load A register
+	Mux16(a=instruction, b=ALUout, sel=instruction[15], out=instructionout);
+	ARegister(in=instructionout, load=loadA, out=regA, out=addressM);
+	Mux16(a=regA, b=inM, sel=selA, out=ALUin2);
+	
+	//Load D register
+	DRegister(in=ALUout, load=loadD, out=ALUin1);
+
+	//ALU computation
+	ALU(x=ALUin1, y=ALUin2, zx=instruction[11], nx=instruction[10], zy=instruction[9], ny=instruction[8], f=instruction[7], no=instruction[6], out=ALUout, out=outM);
+
+	//Program counter
+	COMPARE(x=ALUout, y[0..15]=false, instruction=instruction[0..2], out=cmpout);
+	MUX(a=false, b=cmpout, sel=cInstruction, out=loadpc);
+	PC(in=regA, load=loadpc, inc=true, reset=reset, out=pc);
+	And(a=cInstruction, b=instruction[3], out=writeM);
+}

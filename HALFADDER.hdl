@@ -1,0 +1,10 @@
+//Half-adder
+//Adds two bits together, outputs sum and carry bit
+
+CHIP HALFADDER {
+	IN a, b;
+	OUT sum, carry;
+	PARTS:
+	AND(a=a, b=b, out=carry);
+	XOR(a=a, b=b, out=sum);
+}

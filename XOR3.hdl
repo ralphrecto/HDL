@@ -1,0 +1,12 @@
+//3 bit XOR gate
+//tests if a is the opposite of b AND c
+
+CHIP XOR3 {
+	IN a, b, c;
+	OUT out;
+	PARTS:
+	XOR(a=a, b=b, out=out1);
+	XOR(a=a, b=c, out=out2);
+	AND(a=out1, b=out2, out=out);
+}
+	

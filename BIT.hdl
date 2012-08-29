@@ -1,0 +1,11 @@
+//1-bit register (bit cell)
+//Uses the built-in data flip flop (DFF)
+
+CHIP BIT {
+	IN in, load;
+	OUT out;
+	PARTS:
+	MUX(a=out1, b=in, sel=load, out=in1);
+	DFF(in=in1, out=out1, out=out);
+}
+	

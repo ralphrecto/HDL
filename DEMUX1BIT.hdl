@@ -1,0 +1,10 @@
+//1-bit Demultiplexor!
+
+CHIP DEMUX1BIT {
+	IN in, sel;
+	OUT a, b;
+	PARTS:
+	NOT(a=sel, out=notsel);
+	MUX(a=false, b=in, sel=notsel, out=a);
+	MUX(a=false, b=in, sel=sel, out=b);
+}

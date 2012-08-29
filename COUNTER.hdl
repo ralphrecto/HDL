@@ -1,0 +1,28 @@
+/* 16-bit counter
+ * Features incrementation, reset to 0, and load of new count
+ * 
+ * in[16]: 16-bit input
+ * inc: flag for incrementation 
+ * load: flag for loading input into register 
+ * reset: flag for reseting count to 0 
+ */
+
+CHIP COUNTER {
+	IN in[16], inc, load, reset;
+	OUT out[16];
+	PARTS:
+	//incrementing
+	INCREMENTER16(a=outA, out=incremented);
+	MUX16(a=outA, b=incremented, sel=inc, out=out1);
+
+	//loading
+	MUX16(a=out1, b=in, sel=load, out=out2);
+
+	//reseting
+	MUX16(a=out2, b[0..15]=false, sel=reset, out=out3);
+
+	//register: load new input if an operation was performed
+	OR(a=inc, b=load, out=or1);
+	OR(a=or1, b=reset, out=write);
+	REGISTER(in=out3, load=write, out=out, out=outA);
+}

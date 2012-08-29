@@ -1,0 +1,38 @@
+/* 
+* An arithmetic logic unit!
+* It has 6 input bits; combine them for operations.
+*
+* x and y represent 16 bit numerical inputs
+* nx: negate x
+* zx: zero x (set all bits in x to 0)
+* ny: negate y
+* zy: zero y
+* f: if 1, x+y; else x&y
+* no: negate output
+*/
+
+CHIP ALU {
+	IN x[16], y[16], zx, nx, zy, ny, f, no;
+	OUT out[16];
+	PARTS:
+	//zeroing x
+	MUX16(a=x, b[0..15]=false, sel=zx, out=outx1);
+	//negating x
+	NOT16(a=outx1, out=notoutx1);
+	MUX16(a=outx1, b=notoutx1, sel=nx, out=outx2);
+
+	//zeroing y
+	MUX16(a=y, b[0..15]=false, sel=zy, out=outy1);
+	//negating y
+	NOT16(a=outy1, out=notouty1);
+	MUX16(a=outy1, b=notouty1, sel=ny, out=outy2);
+
+	//f: add or and
+	ADDER16(a=outx2, b=outy2, out=adderout);
+	AND16(a=outx2, b=outy2, out=andout);
+	MUX16(a=andout, b=adderout, sel=f, out=fout);
+
+	//no: negate out or no
+	NOT16(a=fout, out=notfout);
+	MUX16(a=fout, b=notfout, sel=no, out=out);
+}

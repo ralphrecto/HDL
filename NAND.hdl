@@ -1,0 +1,10 @@
+//Basic NAND chip
+//Forms the basis of all other chips
+
+CHIP NAND {
+	IN a, b;
+	OUT out;
+	PARTS:
+	And(a=a, b=b, out=out1);
+	Not(in=out1, out=out);
+}

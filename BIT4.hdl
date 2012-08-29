@@ -1,0 +1,11 @@
+//4-bit BIT implementation
+
+CHIP BIT4 {
+	IN in[4], load;
+	OUT out[4];
+	PARTS:
+	BIT(in=in[0], load=load, out=out[0]);
+	BIT(in=in[1], load=load, out=out[1]);
+	BIT(in=in[2], load=load, out=out[2]);
+	BIT(in=in[3], load=load, out=out[3]);
+}

@@ -1,0 +1,11 @@
+//16-bit register made out of Bit cells
+
+CHIP REGISTER {
+	IN in[16], load;
+	OUT out[16];
+	PARTS:
+	BIT4(in=in[0..3], load=load, out=out[0..3]);
+	BIT4(in=in[4..7], load=load, out=out[4..7]);
+	BIT4(in=in[8..11], load=load, out=out[8..11]);
+	BIT4(in=in[12..15], load=load, out=out[12..15]);
+}

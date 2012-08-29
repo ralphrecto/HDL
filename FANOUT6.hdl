@@ -1,0 +1,13 @@
+//Fans out a 6-bit input into six 1-bit outputs
+
+CHIP FANOUT6 {
+	IN in[6];
+	OUT a, b, c, d, e, f;
+	PARTS:
+	And(a=in[0], b=in[0], out=a);
+	And(a=in[1], b=in[1], out=b);
+	And(a=in[2], b=in[2], out=c);
+	And(a=in[3], b=in[3], out=d);
+	And(a=in[4], b=in[4], out=e);
+	And(a=in[5], b=in[5], out=f);
+}

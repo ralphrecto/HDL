@@ -1,0 +1,14 @@
+// A Xor gate that uses only 4 primitives
+// Test
+
+CHIP XOR {
+	IN a, b;
+	OUT out;
+
+
+	PARTS:
+	Or(a=a, b=b, out=out1);
+	And(a=a, b=b, out=out2);
+	Not(in=out2, out=out3);
+	And(a=out1, b=out3, out=out);
+}

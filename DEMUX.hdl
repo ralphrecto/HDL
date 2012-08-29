@@ -1,0 +1,11 @@
+//16-bit Demultiplexor!
+
+CHIP DEMUX {
+	IN in[16], sel;
+	OUT a[16], b[16];
+	PARTS:
+	NOT(a=sel, out=notsel);
+	MUX16(a[0..15]=false, b=in, sel=notsel, out=a);
+	MUX16(a[0..15]=false, b=in, sel=sel, out=b);
+}
+

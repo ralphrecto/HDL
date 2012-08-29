@@ -1,0 +1,47 @@
+/* A 16-bit binary comparison chip!
+ * This chip was designed to work with the PC component of the computer.
+ * The 3-bit instruction input is the j-bits of a c-instruction.
+ * 
+ * Operation according to instruction[3] (bits correspond to <, =, >)
+ * 100 - less than 
+ * 110 - less than or equal to 
+ * 001 - greater than 
+ * 011 - greater than or equal to
+ * 010 - equal to 
+ * 101 - not equal to 
+ * 000 - no operation (always input 0)
+ * 111 - no operation (always input 1; correspond to JMP) 
+ */
+ 
+CHIP COMPARE {
+	IN x[16], y[16], instruction[3];
+	OUT out;
+	PARTS:
+	//perform x-y
+	ALU(x=x, y=y, zx=false, nx=false, zy=false, ny=true, f=true, no=true, out=ALUout);
+	MSB16(in=ALUout, out=msbALUout);
+
+	//x < y if MSB of aluoutput is negative (MSB=1 according to 2s complement)
+	And(a=msbALUout, b=instruction[0], out=lessthan);
+
+	//x > y if MSB of aluoutput is positive (MSB=0 according to 2s complement)
+	Not(in=msbALUout, out=notmsb);
+	And(a=notmsb, b=instruction[2], out=greaterthan);
+
+	//equal to operation
+	XOR16(a=x, b=y, out=xorout);
+	Not16(in=xorout, out=notxorout);
+	AND16WAY(in=notxorout, out=andout);
+
+	//notequal to operation
+	And(a=instruction[0], b=instruction[2], out=notflag1);
+	Not(in=instruction[1], out=notflag2);
+	And(a=notflag1, b=notflag2, out=notequalflag);
+	Not(in=andout, out=notandout);
+
+	//selecting proper output
+	Or(a=lessthan, b=andout, out=or1);
+	Or(a=greaterthan, b=andout, out=or2);
+	Or(a=or1, b=or2, out=out1);
+	Mux(a=out1, b=notandout, sel=notequalflag, out=out);
+}

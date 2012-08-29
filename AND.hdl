@@ -1,0 +1,11 @@
+//Primitive And
+//Built from Nand gates
+
+CHIP AND {
+	IN a, b;
+	OUT out;
+	PARTS:
+	NAND(a=a, b=b, out=out1);
+	NAND(a=a, b=b, out=out2);
+	NAND(a=out1, b=out2, out=out);
+}

@@ -1,0 +1,8 @@
+//increments a 16-bit number by 1
+
+CHIP INCREMENTER16 {
+	IN a[16];
+	OUT out[16];
+	PARTS:
+	ADDER16(a=a, b[0]=true, b[1..15]=false, out=out);
+}

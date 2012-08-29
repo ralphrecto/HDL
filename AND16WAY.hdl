@@ -1,0 +1,23 @@
+//And 16-way
+//Ands a 16-bit bus. Returns 1 if all is 1, 0 if not
+
+CHIP AND16WAY {
+	IN in[16];
+	OUT out;
+	PARTS:
+	And(a=in[0], b=in[1], out=out1a);
+	And(a=in[2], b=in[3], out=out2a);
+	And(a=in[4], b=in[5], out=out3a);
+	And(a=in[6], b=in[7], out=out4a);
+	And(a=in[8], b=in[9], out=out5a);
+	And(a=in[10], b=in[11], out=out6a);
+	And(a=in[12], b=in[13], out=out7a);
+	And(a=in[14], b=in[15], out=out8a);
+	And(a=out1a, b=out2a, out=out1b);
+	And(a=out3a, b=out4a, out=out2b);
+	And(a=out5a, b=out6a, out=out3b);
+	And(a=out7a, b=out8a, out=out4b);
+	And(a=out1b, b=out2b, out=out1c);
+	And(a=out3b, b=out4b, out=out2c);
+	And(a=out1c, b=out2c, out=out);
+}

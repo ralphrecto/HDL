@@ -1,0 +1,9 @@
+//Outputs the MSB of a 16-bit bus
+
+CHIP MSB16 {
+	IN in[16];
+	OUT out;
+	PARTS:
+	And(a=in[15], b=in[15], out=out);
+}
+

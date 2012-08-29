@@ -1,0 +1,8 @@
+//TEST CHIP ONLY.
+
+CHIP NEGATOR {
+	IN a[16], sel;
+	OUT out[16];
+	PARTS:
+	MUX16(a=a, b[0..15]=false, sel=sel, out=out);
+}

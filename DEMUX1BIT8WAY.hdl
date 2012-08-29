@@ -1,0 +1,12 @@
+//8-way demux!
+
+CHIP DEMUX1BIT8WAY {
+	IN in, sel[3];
+	OUT a, b, c, d, e, f, g, h;
+	PARTS:
+	DEMUX1BIT4WAY(in=in, sel=sel[0..1], a=int1, b=int2, c=int3, d=int4);
+	DEMUX1BIT(in=int1, sel=sel[2], a=a, b=e);
+	DEMUX1BIT(in=int2, sel=sel[2], a=b, b=f);
+	DEMUX1BIT(in=int3, sel=sel[2], a=c, b=g);
+	DEMUX1BIT(in=int4, sel=sel[2], a=d, b=h);
+}
