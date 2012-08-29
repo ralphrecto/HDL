@@ -1,0 +1,1 @@
+These chips were designed using the HDL and the hardware simulator provided as a package with Nisan and Schocken's The Elements of Computing Systems. The highest level chip that I got around to was the Computer chip (COMPUTER.hdl), which simulates the 16-bit Hack computer platform spec'd and described in Nisan and Schocken's book.
